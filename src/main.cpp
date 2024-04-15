@@ -1,11 +1,35 @@
 #include <Arduino.h>
+#include <BLEDevice.h>
+#include <BLEServer.h>
+#include <BLEUtils.h>
 
-// put function declarations here:
-int myFunction(int, int);
+
+class MyCallbacks: public BLEAdvertisedDeviceCallbacks {
+  void onResult(BLEAdvertisedDevice advertisedDevice) {
+    Serial.println(advertisedDevice.toString().c_str());
+  }
+};
+
+//BLEAdvertisedDevice target = "be:58:de:01:cf:60"; //Put the mac address of yours led strip
+
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  
+   Serial.begin(9600);
+   Serial.println("Starting BLE work!");
+
+   BLEDevice::init("ESP32");
+   BLEScan* pBLEScan = BLEDevice::getScan();
+   pBLEScan->setAdvertisedDeviceCallbacks(new MyCallbacks());
+   pBLEScan->start(30);
+
+   if(pBLEScan);
+
+
+
+   
+
+
 }
 
 void loop() {
